@@ -6,6 +6,7 @@ export const createEvent = async (data: any, userId: string) => {
 };
 
 export const findEventById = async (id: string) => {
+    
     return await Event.findById(id);
 };
 

@@ -23,7 +23,11 @@ export const getEventValidation = async (
   }
   try {
     const { id }: RequestParams = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).send("Invalid event ID format.");
+      }
     const validId = new mongoose.Types.ObjectId(id)
+    console.log(validId);
     const event = await Event.findOne({ _id: validId  });
     if (event) {
       next();
