@@ -11,12 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postEventValidation = void 0;
 const zod_1 = require("zod");
-const eventSchema = zod_1.z.object({
+const eventSchema = zod_1.z
+    .object({
     start: zod_1.z.number().min(0).max(540),
     duration: zod_1.z.number(),
     title: zod_1.z.string(),
-    overlaps: zod_1.z.boolean().optional()
-}).strict();
+    overlaps: zod_1.z.boolean().optional(),
+})
+    .strict();
 const postEventValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const parsed = eventSchema.safeParse(req.body);
     if (!parsed.success)

@@ -16,16 +16,18 @@ exports.loginValidation = void 0;
 const zod_1 = require("zod");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const User_1 = __importDefault(require("../models/User"));
-const loginSchema = zod_1.z.object({
+const loginSchema = zod_1.z
+    .object({
     username: zod_1.z.string().min(3),
-    password: zod_1.z.string().min(6)
-}).strict();
+    password: zod_1.z.string().min(6),
+})
+    .strict();
 const loginValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const parsed = loginSchema.safeParse(req.body);
     if (!parsed.success)
         res.status(400).send(parsed.error);
     else {
-        const { username: usernameFromBody, password: passwordFromBody } = req.body;
+        const { username: usernameFromBody, password: passwordFromBody, } = req.body;
         const user = yield User_1.default.findOne({ username: usernameFromBody });
         if (user) {
             const validPass = yield bcryptjs_1.default.compare(passwordFromBody, user.password);
@@ -34,10 +36,10 @@ const loginValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
                 next();
             }
             else
-                res.status(400).send('Invalid Email or Password!!!');
+                res.status(400).send("Invalid Email or Password!!!");
         }
         else
-            res.status(400).send('Invalid Email or Password!!!');
+            res.status(400).send("Invalid Email or Password!!!");
     }
 });
 exports.loginValidation = loginValidation;

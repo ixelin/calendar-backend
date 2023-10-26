@@ -35,12 +35,12 @@ const writeEventsToJson = (userId) => __awaiter(void 0, void 0, void 0, function
     const events = yield (0, exports.findEventsByUserId)(userId);
     const json = JSON.stringify(events, null, 2);
     return new Promise((resolve, reject) => {
-        fs_1.default.writeFile('data.json', json, 'utf8', (err) => {
+        fs_1.default.writeFile("data.json", json, "utf8", (err) => {
             if (err) {
                 reject(err);
             }
             else {
-                resolve('data.json');
+                resolve("data.json");
             }
         });
     });

@@ -24,25 +24,25 @@ dotenv_1.default.config();
 const port = process.env.PORT || 3001;
 app.use(express_1.default.json());
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    if (req.method === 'OPTIONS') {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    if (req.method === "OPTIONS") {
         res.sendStatus(200);
     }
     else {
         next();
     }
 });
-app.use('/api/user', auth_1.default);
-app.use('/api/protected', protected_1.default);
+app.use("/api/user", auth_1.default);
+app.use("/api/protected", protected_1.default);
 app.use(not_found_1.notFound);
 app.use(error_handler_1.errorHandlerMiddleware);
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const db = yield (0, connect_1.connectDB)('mongodb://0.0.0.0:27017/');
+        const db = yield (0, connect_1.connectDB)("mongodb://0.0.0.0:27017/");
         if (db) {
-            console.log('Connected to the database!!!');
+            console.log("Connected to the database!!!");
         }
         app.listen(port, () => console.log(`Server listening on port ${port}...`));
     }

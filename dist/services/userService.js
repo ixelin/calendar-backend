@@ -27,14 +27,14 @@ const createUser = (credentials) => __awaiter(void 0, void 0, void 0, function* 
     const user = new User_1.default({
         username: username,
         password: hashedPassword,
-        id: Date.now()
+        id: Date.now(),
     });
     return yield user.save();
 });
 exports.createUser = createUser;
 const generateJwtForUser = (id) => {
     return jsonwebtoken_1.default.sign({ id: id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_LIFETIME
+        expiresIn: process.env.JWT_LIFETIME,
     });
 };
 exports.generateJwtForUser = generateJwtForUser;

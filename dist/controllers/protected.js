@@ -67,21 +67,21 @@ exports.deleteEventController = deleteEventController;
 const getJsonFileController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const filePath = yield eventService.writeEventsToJson(req.user.id);
-        res.sendFile(filePath, { root: '.' }, (err) => {
+        res.sendFile(filePath, { root: "." }, (err) => {
             if (err) {
-                console.error('Error sending JSON file:', err);
-                return res.status(500).json({ error: 'Error sending JSON file' });
+                console.error("Error sending JSON file:", err);
+                return res.status(500).json({ error: "Error sending JSON file" });
             }
             fs_1.default.unlink(filePath, (err) => {
                 if (err) {
-                    console.error('Error deleting JSON file:', err);
+                    console.error("Error deleting JSON file:", err);
                 }
             });
         });
     }
     catch (err) {
-        console.error('Error writing JSON file:', err);
-        return res.status(500).json({ error: 'Error writing JSON file' });
+        console.error("Error writing JSON file:", err);
+        return res.status(500).json({ error: "Error writing JSON file" });
     }
 });
 exports.getJsonFileController = getJsonFileController;

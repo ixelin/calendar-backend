@@ -15,10 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerValidation = void 0;
 const zod_1 = require("zod");
 const User_1 = __importDefault(require("../models/User"));
-const registerSchema = zod_1.z.object({
+const registerSchema = zod_1.z
+    .object({
     username: zod_1.z.string().min(3),
-    password: zod_1.z.string().min(6)
-}).strict();
+    password: zod_1.z.string().min(6),
+})
+    .strict();
 const registerValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const parsed = registerSchema.safeParse(req.body);
     if (!parsed.success)
@@ -27,7 +29,7 @@ const registerValidation = (req, res, next) => __awaiter(void 0, void 0, void 0,
         const { username } = req.body;
         const usernameExist = yield User_1.default.findOne({ username: username });
         if (usernameExist)
-            res.status(400).send('User with this name already exists!!!');
+            res.status(400).send("User with this name already exists!!!");
         else
             next();
     }

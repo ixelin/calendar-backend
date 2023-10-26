@@ -6,18 +6,18 @@ const UserSchema = new mongoose_1.Schema({
         type: String,
         required: true,
         min: 3,
-        max: 255
+        max: 255,
     },
     password: {
         type: String,
         required: true,
         max: 1024,
-        min: 6
+        min: 6,
     },
     id: {
         type: Number,
-        default: Date.now()
-    }
+        default: Date.now(),
+    },
 });
-const User = (0, mongoose_1.model)('User', UserSchema);
+const User = (0, mongoose_1.model)("User", UserSchema);
 exports.default = User;

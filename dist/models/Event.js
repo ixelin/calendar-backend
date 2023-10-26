@@ -6,7 +6,7 @@ const EventSchema = new mongoose_1.Schema({
         type: Number,
         required: true,
         min: 0,
-        max: 540
+        max: 540,
     },
     duration: {
         type: Number,
@@ -22,7 +22,7 @@ const EventSchema = new mongoose_1.Schema({
     userId: {
         type: Number,
         required: true,
-    }
+    },
 });
-const Event = (0, mongoose_1.model)('Event', EventSchema);
+const Event = (0, mongoose_1.model)("Event", EventSchema);
 exports.default = Event;

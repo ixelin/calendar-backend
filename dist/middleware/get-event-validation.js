@@ -28,7 +28,11 @@ const getEventValidation = (req, res, next) => __awaiter(void 0, void 0, void 0,
     }
     try {
         const { id } = req.params;
+        if (!mongoose_1.default.Types.ObjectId.isValid(id)) {
+            return res.status(400).send("Invalid event ID format.");
+        }
         const validId = new mongoose_1.default.Types.ObjectId(id);
+        console.log(validId);
         const event = yield Event_1.default.findOne({ _id: validId });
         if (event) {
             next();

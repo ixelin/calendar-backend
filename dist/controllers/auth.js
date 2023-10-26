@@ -50,6 +50,15 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.registerUser = registerUser;
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = userService.generateJwtForUser(req.id);
-    res.header('Authorization', `Bearer ${token}`).send({ token, data: { username: req.body.username, password: req.body.password, id: req.id } });
+    res
+        .header("Authorization", `Bearer ${token}`)
+        .send({
+        token,
+        data: {
+            username: req.body.username,
+            password: req.body.password,
+            id: req.id,
+        },
+    });
 });
 exports.loginUser = loginUser;

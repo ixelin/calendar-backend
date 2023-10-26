@@ -1,4 +1,4 @@
-import { Response, Request, NextFunction, Errback } from "express"
+import { Response, NextFunction, Errback } from "express"
 
 export const errorHandlerMiddleware = async (err: Errback, req: any, res: Response, next: NextFunction) => {
     console.log(err);
