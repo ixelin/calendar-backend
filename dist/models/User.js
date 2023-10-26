@@ -2,15 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const UserSchema = new mongoose_1.Schema({
-    name: {
+    username: {
         type: String,
         required: true,
         min: 3,
-        max: 255
-    },
-    email: {
-        type: String,
-        required: true,
         max: 255
     },
     password: {
@@ -19,8 +14,8 @@ const UserSchema = new mongoose_1.Schema({
         max: 1024,
         min: 6
     },
-    date: {
-        type: Date,
+    id: {
+        type: Number,
         default: Date.now()
     }
 });

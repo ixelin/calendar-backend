@@ -8,28 +8,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerValidation = void 0;
+exports.postEventValidation = void 0;
 const zod_1 = require("zod");
-const User_1 = __importDefault(require("../models/User"));
-const registerSchema = zod_1.z.object({
-    username: zod_1.z.string().min(3),
-    password: zod_1.z.string().min(6)
+const eventSchema = zod_1.z.object({
+    start: zod_1.z.number().min(0).max(540),
+    duration: zod_1.z.number(),
+    title: zod_1.z.string(),
+    overlaps: zod_1.z.boolean().optional()
 }).strict();
-const registerValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const parsed = registerSchema.safeParse(req.body);
+const postEventValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const parsed = eventSchema.safeParse(req.body);
     if (!parsed.success)
         res.status(400).send(parsed.error);
     else {
-        const { username } = req.body;
-        const usernameExist = yield User_1.default.findOne({ username: username });
-        if (usernameExist)
-            res.status(400).send('User with this name already exists!!!');
-        else
-            next();
+        next();
     }
 });
-exports.registerValidation = registerValidation;
+exports.postEventValidation = postEventValidation;

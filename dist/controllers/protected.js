@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,9 +31,57 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sampleController = void 0;
-const sampleController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.status(200).json({ data: 'This is only accessible using JWT', user: req.user });
+exports.getJsonFileController = exports.deleteEventController = exports.getEventController = exports.getOneEventController = exports.postEventController = exports.getUserController = void 0;
+const fs_1 = __importDefault(require("fs"));
+const eventService = __importStar(require("../services/eventService"));
+const userService = __importStar(require("../services/userService"));
+const getUserController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield userService.findUserById(req.user.id);
+    res.status(200).json(user);
 });
-exports.sampleController = sampleController;
+exports.getUserController = getUserController;
+const postEventController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const event = yield eventService.createEvent(req.body, req.user.id);
+    res.status(200).json(event);
+});
+exports.postEventController = postEventController;
+const getOneEventController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const event = yield eventService.findEventById(req.params.id);
+    res.status(200).json(event);
+});
+exports.getOneEventController = getOneEventController;
+const getEventController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const events = yield eventService.findEventsByUserId(req.user.id);
+    res.status(200).json(events);
+});
+exports.getEventController = getEventController;
+const deleteEventController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const event = yield eventService.deleteEventById(req.params.id);
+    res.status(200).json(event);
+});
+exports.deleteEventController = deleteEventController;
+const getJsonFileController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const filePath = yield eventService.writeEventsToJson(req.user.id);
+        res.sendFile(filePath, { root: '.' }, (err) => {
+            if (err) {
+                console.error('Error sending JSON file:', err);
+                return res.status(500).json({ error: 'Error sending JSON file' });
+            }
+            fs_1.default.unlink(filePath, (err) => {
+                if (err) {
+                    console.error('Error deleting JSON file:', err);
+                }
+            });
+        });
+    }
+    catch (err) {
+        console.error('Error writing JSON file:', err);
+        return res.status(500).json({ error: 'Error writing JSON file' });
+    }
+});
+exports.getJsonFileController = getJsonFileController;

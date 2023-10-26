@@ -17,7 +17,7 @@ const zod_1 = require("zod");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const User_1 = __importDefault(require("../models/User"));
 const loginSchema = zod_1.z.object({
-    email: zod_1.z.string().min(6).email(),
+    username: zod_1.z.string().min(3),
     password: zod_1.z.string().min(6)
 }).strict();
 const loginValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -25,12 +25,12 @@ const loginValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
     if (!parsed.success)
         res.status(400).send(parsed.error);
     else {
-        const { email: emailFromBody, password: passwordFromBody } = req.body;
-        const user = yield User_1.default.findOne({ email: emailFromBody });
+        const { username: usernameFromBody, password: passwordFromBody } = req.body;
+        const user = yield User_1.default.findOne({ username: usernameFromBody });
         if (user) {
             const validPass = yield bcryptjs_1.default.compare(passwordFromBody, user.password);
             if (validPass) {
-                req.userId = user._id;
+                req.id = user.id;
                 next();
             }
             else

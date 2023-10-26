@@ -12,24 +12,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerValidation = void 0;
+exports.getEventValidation = void 0;
 const zod_1 = require("zod");
-const User_1 = __importDefault(require("../models/User"));
-const registerSchema = zod_1.z.object({
-    username: zod_1.z.string().min(3),
-    password: zod_1.z.string().min(6)
-}).strict();
-const registerValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const parsed = registerSchema.safeParse(req.body);
-    if (!parsed.success)
-        res.status(400).send(parsed.error);
-    else {
-        const { username } = req.body;
-        const usernameExist = yield User_1.default.findOne({ username: username });
-        if (usernameExist)
-            res.status(400).send('User with this name already exists!!!');
-        else
+const Event_1 = __importDefault(require("../models/Event"));
+const mongoose_1 = __importDefault(require("mongoose"));
+const eventSchema = zod_1.z
+    .object({
+    id: zod_1.z.string(),
+})
+    .strict();
+const getEventValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const parsed = eventSchema.safeParse(req.params);
+    if (!parsed.success) {
+        return res.status(400).send(parsed.error);
+    }
+    try {
+        const { id } = req.params;
+        const validId = new mongoose_1.default.Types.ObjectId(id);
+        const event = yield Event_1.default.findOne({ _id: validId });
+        if (event) {
             next();
+        }
+        else {
+            return res.status(400).send("This event no longer exist");
+        }
+    }
+    catch (_a) {
+        return res.status(500).send("Internal server error");
     }
 });
-exports.registerValidation = registerValidation;
+exports.getEventValidation = getEventValidation;
